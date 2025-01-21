@@ -1,0 +1,135 @@
+/* General Styles */
+body {
+    width: 1000px;
+    height: 1000px;
+    font-family: Arial, sans-serif;
+    margin: 0 auto; /* Centers the page */
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Vertically stack navbar and main content */
+}
+
+/* Navbar */
+.navbar {
+    width: 100%; /* Full width */
+    height: 60px;
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    height: calc(100% - 60px); /* Adjust height minus navbar height */
+    flex-direction: row; /* Horizontal layout for left and right halves */
+}
+
+/* Left Half */
+.left-half {
+    width: 50%; /* Half the width */
+    display: flex;
+    flex-direction: column; /* Stack greetings and staff sections */
+    /* padding: 1rem; */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Greetings Section */
+.greetings {
+    flex: 1; /* Takes up space above Staff */
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    font-family: 'Brush Script MT', cursive;
+    justify-content: center;
+    background-color: #ffffff;
+    /* padding: 1rem; */
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.greetings p {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align:start;
+    line-height: 0.2rem;
+    font-size: 1rem;
+    color: #000000;
+}
+
+.greetings h1 {
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Staff Section */
+.staff {
+    flex: 1; /* Remaining space in left half */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 1rem;
+}
+
+.staff .btn {
+    width: 80%;
+    height: 80%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #ffa640;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.staff .btn:hover {
+    background-color: #218838;
+}
+
+/* Right Half */
+.right-half {
+    width: 50%; /* Half the width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    background-image: url('img/store.jpg'); /* Add background image */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the image */
+}
+
+.right-half .btn {
+    
+    width: 80%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #b68a51;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.right-half .btn:hover {
+    background-color: #b3924b;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.right-half .btn:hover {
+    background-color: #b3924b;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Page</title>
+    <link rel="stylesheet" href="front-page-2.css">
+
+</head>
+<body>
+    <section class="container">
+        <header>
+            <section class="bar">
+                <input type="text" id="text-area" class="search" placeholder="Search for products">
+                <button id="search">
+                    <img src="/img/search.svg" alt="search icon" class="search-button">
+                </button>
+                <button>
+                    <img src="/img/list.svg" alt="list icon">
+                </button>
+            </section>
+        </header>
+        <main>
+            <section class="adds">
+                <div class="image-container">
+                    <img id="leftAdd" alt="Left Ad">
+                    <button id="leftBbutton" class="button-overlay-left"><strong>&lt;</strong></button>
+                </div>
+                <div class="image-container">
+                    <img id="rightAdd" alt="Right Ad">
+                    <button id="rightButton" class="button-overlay-right"><strong>&gt;</strong></button>
+                </div>
+            </section>
+                <h2>Avilable categories</h2>
+                <div id="announcement" class="announcement">
+                    <p>Special offers and promotions will appear here!</p>
+                </div>
+                <section class="categories" id="categories-section">
+                    <section>
+                        <img src="" alt="" id = "category-image">
+                        <h3 id="category-name"></h3>
+                    </section>
+                </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Store Name. All rights reserved.</p>
+        </footer>
+        
+    </section>
+    <script src="customer.js"></script>
+    <script src="papaparse.min.js"></script>
+</body>
+</html>

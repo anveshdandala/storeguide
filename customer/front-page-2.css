@@ -1,0 +1,120 @@
+body {
+    width: 1000px;
+    height: 1000px;
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #c7b3b3;
+    display: flex;
+    flex-direction: column; 
+}
+.container {
+width: 1200px;
+    height:2000px; 
+    background-color: #e3d5ca;
+}
+header {
+    width: 80%;
+    height: 90px;
+    background-color: #99582ab0;
+    margin: 0 auto; 
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.bar{
+    gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 1rem;
+}
+.bar button{
+    border: none;
+    background: none;
+    border-radius: 45%;
+}
+.bar img {
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.search {
+    width: 40%;
+    height: 20px;
+    background-color: #c19d64b5;
+    color: #fff;
+    margin-left: 0%;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}      
+.search-button:hover{
+    cursor: pointer;
+}    
+.adds {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px; /* Space between the images */
+    margin-top: 20px;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-container img {
+    width: 450px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.button-overlay-left,
+.button-overlay-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #c19d64b5;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-overlay-left {
+    left: -30px; /* Adjust position relative to the left ad */
+}
+
+.button-overlay-right {
+    right: -30px; /* Adjust position relative to the right ad */
+}
+
+.announcement {
+    margin: 0 auto;
+    color: #000000;
+    
+    text-align: start;
+    width: fit-content;
+    height: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    animation: slide 10s infinite ease-in-out;
+}
+.announcement:hover {
+    animation-play-state: paused;
+}
+@keyframes slide {
+    0% {
+        transform: translateX(-300px);
+    }
+    40% {
+        transform: translateX(-50px);
+    }
+
+    100% {
+        transform: translateX(300px);
+    }
+}

@@ -15,12 +15,18 @@
                 <button id="search">
                     <img src="/img/search.svg" alt="search icon" class="search-button">
                 </button>
-                <button>
-                    <img src="/img/list.svg" alt="list icon">
+                <a href="table-cat.html"><button type="button" class="list-button">
+                    <img src="/img/list.svg" alt="list" class="list-svg">
                 </button>
+            </a>
             </section>
         </header>
         <main>
+            <section id="results" class="results">
+                <div id="products-grid" class="products-grid">
+                </div>
+            </section>
+            
             <section class="adds">
                 <div class="image-container">
                     <img id="leftAdd" alt="Left Ad">
@@ -35,11 +41,13 @@
                 <div id="announcement" class="announcement">
                     <p>Special offers and promotions will appear here!</p>
                 </div>
-                <section class="categories" id="categories-section">
-                    <section>
-                        <img src="" alt="" id = "category-image">
-                        <h3 id="category-name"></h3>
-                    </section>
+                <section class="categories" id="category-container">
+                    <template id="category-template">
+                        <section class="category-item">
+                            <img src="" alt="" class="category-image">
+                            <h3 class="category-name"></h3>
+                        </section>
+                    </template>
                 </section>
         </main>
         <footer>

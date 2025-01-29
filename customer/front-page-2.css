@@ -119,69 +119,104 @@ header {
 }
 /* with gpt *//* Overlay container */
 .results {
-    display: none; /* Initially hidden */
-    position: fixed;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 70%;
-    background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
-    border: 2px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000; /* Above all other elements */
-    overflow-y: auto; /* Add scrolling if content overflows */
-    padding: 1rem;
-    border-radius: 8px;
+    display: none; /* Will be set to 'block' dynamically by JavaScript */
+    position: fixed; /* Anchor to the viewport */
+    top: 140px; /* Fixed position below the header */
+    left: calc((2000px - 1600px) / 2); /* Center horizontally within the fixed display dimensions */
+    width: 1600px; /* Fixed width */
+    height: calc(1200px - 140px); /* Fixed height minus header height */
+    background-color: rgba(160, 115, 78, 0.9); /* Background with transparency */
+    z-index: 9999; /* Ensure it appears above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Optional shadow */
+    backdrop-filter: blur(10px); /* Optional blur effect */
+    border-radius: 10px; /* Rounded corners */
+    overflow: auto; /* Add scrolling if content exceeds height */
 }
-
-/* Products grid inside the overlay */
-#products-grid {
+/* Container for the results grid */
+.products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Flexible column layout */
+    gap: 20px; /* Space between the cards */
+    padding: 20px; /* Padding around the grid */
+    background-color: #ffffff; /* Light background to mimic Amazon's layout */
 }
 
 /* Individual product card */
 .product-card {
-    background-color: #f9f9f9;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #c19d64b5; /* White background for contrast */
+    border: 1px solid #ffffff; /* Subtle border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Inner spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effect */
 }
 
+.product-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+/* Product image */
 .product-card img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
+    width: 100%; /* Full width */
+    height: 150px; /* Fixed height for uniformity */
+    object-fit: cover; /* Maintain aspect ratio, fill space */
+    border-radius: 4px; /* Rounded corners for image */
+    margin-bottom: 12px; /* Space below image */
 }
 
+/* Product title */
 .product-card h3 {
-    font-size: 1rem;
-    margin: 0.5rem 0;
-    color: #333;
+    top: 150px; /* space for image  */
+    font-size: 16px; /* Moderate font size */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Dark text */
+    margin-bottom: 8px; /* Space below title */
 }
 
+/* Product description */
 .product-card p {
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
-    color: #666;
+    font-size: 14px; /* Smaller font for description */
+    color: #555; /* Muted text color */
+    margin-bottom: 8px; /* Space below each paragraph */
 }
 
+/* Price text */
+.product-card p strong {
+    color: #865f39; /* Highlight price in Amazon's signature orange */
+}
+
+/* Add to List button */
 .product-card button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
+    display: block; /* Full width */
+    position: fixed; /* Fixed position */
+    bottom: 20px; /* 20px from the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    height: auto;
+    width: 100%; /* Full width button */
+    padding: 10px; /* Inner padding */
+    font-size: 14px; /* Button font size */
+    font-weight: bold; /* Bold text */
+    color: #fff; /* White text */
+    background-color: #99582ab0; /* Amazon's orange color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    text-align: center; /* Center align text */
+    transition: background-color 0.3s; /* Smooth hover effect */
 }
 
 .product-card button:hover {
-    background-color: #0056b3;
+    background-color: #794f2d; /* Slightly darker orange on hover */
 }
+
+.product-card button:focus {
+    outline: none; /* Remove focus outline */
+    box-shadow: 0 0 5px 2px rgba(228, 121, 17, 0.5); /* Add glowing effect */
+}
+
+
 /* table */
 .container-tab{
     width: 100%;

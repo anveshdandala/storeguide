@@ -71,54 +71,54 @@ function searchingCsv(searchData) {
         });
     });
 }
-//products.csv
-function searchingCsv2(searchData){
-    return new Promise((resolve, reject) => {
-    setTimeout(() => {
-    console.log("searching for",searchData,"in csv2");
-    Papa.parse('products.csv',{
-        download:true,
-        header:true,
-        complete:function(result) {
-            const rows = result.data;
-            // console.log('Parsed rows:', rows);
-            const tokens = searchData.toLowerCase().split(/\s+/);
+// //products.csv
+// function searchingCsv2(searchData){
+//     return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//     console.log("searching for",searchData,"in csv2");
+//     Papa.parse('products.csv',{
+//         download:true,
+//         header:true,
+//         complete:function(result) {
+//             const rows = result.data;
+//             // console.log('Parsed rows:', rows);
+//             const tokens = searchData.toLowerCase().split(/\s+/);
 
-            if (!rows || rows.length === 0) {
-                console.warn('No data found in the CSV.');
-                return;
-            }
-            const row_cnt=rows.map(row=>{
-                const productName =  row['name'] ? row['name'].toLowerCase() : '';
-                if (!productName) return {row,cnt:0};
-                let cnt=0;
-                for (let token of tokens) {
-                    if (productName.includes(token)) {
-                        cnt += 1;
-                    }
-                }
-                return {row,cnt};
-            });
+//             if (!rows || rows.length === 0) {
+//                 console.warn('No data found in the CSV.');
+//                 return;
+//             }
+//             const row_cnt=rows.map(row=>{
+//                 const productName =  row['name'] ? row['name'].toLowerCase() : '';
+//                 if (!productName) return {row,cnt:0};
+//                 let cnt=0;
+//                 for (let token of tokens) {
+//                     if (productName.includes(token)) {
+//                         cnt += 1;
+//                     }
+//                 }
+//                 return {row,cnt};
+//             });
             
-            const sortedRows = row_cnt.filter(item => item.cnt > 0).sort((a, b) => b.cnt - a.cnt);
-            if (sortedRows.length > 0) {
-                console.log('Matching rows sorted from csv2:', sortedRows);
-                sortedRows.forEach(item => stack.push(item.row));
-            }
-            else {
-                console.warn('No matches found for:', searchData);
-            }
-            resolve();
+//             const sortedRows = row_cnt.filter(item => item.cnt > 0).sort((a, b) => b.cnt - a.cnt);
+//             if (sortedRows.length > 0) {
+//                 console.log('Matching rows sorted from csv2:', sortedRows);
+//                 sortedRows.forEach(item => stack.push(item.row));
+//             }
+//             else {
+//                 console.warn('No matches found for:', searchData);
+//             }
+//             resolve();
 
-        },
-        error: function(error,file){
-            console.log('Error processing 2nd CSV:', error, file)
-        }
+//         },
+//         error: function(error,file){
+//             console.log('Error processing 2nd CSV:', error, file)
+//         }
 
-    });
-    },400);
-});
-}
+//     });
+//     },400);
+// });
+// }
 //dmart
 function searchingCsv3(searchData){
     return new Promise((resolve, reject) => {

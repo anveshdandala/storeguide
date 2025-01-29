@@ -31,7 +31,7 @@ function searchingCsv(searchData) {
                 console.error('Error processing the CSV:', error, file);
             },
             complete: function (results) {
-                console.log('CSV data parsed:', results);
+                // console.log('CSV data parsed:', results);
                 const rows = results.data;
 
                 if (!rows || rows.length === 0) {
@@ -116,9 +116,58 @@ function searchingCsv2(searchData){
         }
 
     });
-    },1000);
+    },400);
 });
 }
+//dmart
+function searchingCsv3(searchData){
+    return new Promise((resolve, reject) => {
+    setTimeout(() => {
+    console.log("searching for",searchData,"in csv3");
+    Papa.parse('DMart.csv',{
+        download:true,
+        header:true,
+        complete:function(result) {
+            const rows = result.data;
+            // console.log('Parsed rows:', rows);
+            const tokens = searchData.toLowerCase().split(/\s+/);
+
+            if (!rows || rows.length === 0) {
+                console.warn('No data found in the CSV.');
+                return;
+            }
+            const row_cnt=rows.map(row=>{
+                const productName =  row['Name'] ? row['Name'].toLowerCase() : '';
+                if (!productName) return {row,cnt:0};
+                let cnt=0;
+                for (let token of tokens) {
+                    if (productName.includes(token)) {
+                        cnt += 1;
+                    }
+                }
+                return {row,cnt};
+            });
+            
+            const sortedRows = row_cnt.filter(item => item.cnt > 0).sort((a, b) => b.cnt - a.cnt);
+            if (sortedRows.length > 0) {
+                console.log('Matching rows sorted from csv3:', sortedRows);
+                sortedRows.forEach(item => stack.push(item.row));
+            }
+            else {
+                console.warn('No matches found for:', searchData);
+            }
+            resolve();
+
+        },
+        error: function(error,file){
+            console.log('Error processing 3rd CSV:', error, file)
+        }
+
+    });
+    },600);
+});
+}
+
 async function handleSearch() {
 
     const searchData = document.getElementById('text-area').value.trim().toLowerCase();    
@@ -128,7 +177,7 @@ async function handleSearch() {
     }
     stack.data=[];
     try {
-        await Promise.all([searchingCsv(searchData),searchingCsv2(searchData)]);
+        await Promise.all([searchingCsv(searchData),searchingCsv2(searchData),searchingCsv3(searchData)]);
         if(stack.isEmpty()){
             console.log('no match found in either of em');
         }
@@ -163,14 +212,14 @@ function displayResults(products) {
         card.className = 'product-card';
 
         card.innerHTML = `
-            <img src="${product.imageURLs || product.img_link || 'placeholder.jpg'}" 
-                alt="${product.name || product.product_name || 'Product'}">
-            <h3>${(product.name || product.product_name || 'Unnamed Product').slice(0, 20)}...</h3>  <!-- Show only first 20 characters -->
-            <p>${(product.p_description || product.about_product || 'No description available.')
-                .slice(0, 100)}...</p>  <!-- Truncate description to 100 characters -->
-            <p><strong>Price:</strong> $${product.price || product.discounted_price || 'N/A'}</p>
-            <button onclick="addToList('${product.id || product.product_id || ''}')">Add to List</button>
-        `;
+                    <img src="${product.imageURLs || product.img_link || 'img/placeholder.png'}" 
+                        alt="${product.name || 'Product'}">
+                    <h3>${(product.name || product.Name || product.product_name ||'Unnamed Product').slice(0, 20)}...</h3>  <!-- Show only first 20 characters -->
+                    <p>${(product.p_description || product.about_product || product.Description || 'No description available.')
+                        .slice(0, 100)}...</p>  <!-- Truncate description to 100 characters -->
+                    <p><strong>Price:</strong> $${product.price || product.Price || 'N/A'}</p>
+                    <button onclick="addToList('${product.product_id || product.ID || product.p_id || ''}')">Add to List</button>
+                `;
 
         productsGrid.appendChild(card);
     });

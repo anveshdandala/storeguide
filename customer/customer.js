@@ -177,7 +177,7 @@ async function handleSearch() {
     }
     stack.data=[];
     try {
-        await Promise.all([searchingCsv(searchData),searchingCsv2(searchData),searchingCsv3(searchData)]);
+        await Promise.all([searchingCsv(searchData),searchingCsv3(searchData)]);
         if(stack.isEmpty()){
             console.log('no match found in either of em');
         }

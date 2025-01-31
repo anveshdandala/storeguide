@@ -69,57 +69,6 @@ function searchingCsv(searchData) {
         });
     });
 }
-function searchingCsv2(searchData) {
-    return new Promise((resolve, reject) => {
-        console.log("Searching for", searchData, "in csv2");
-        
-        Papa.parse('products.csv', {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            error: function (error, file) {
-                console.error('Error processing the CSV:', error, file);
-                reject(error);
-            },
-            complete: function (results) {
-                const rows = results.data;
-
-                if (!rows || rows.length === 0) {
-                    console.warn('No data found in the CSV.');
-                    resolve([]);
-                    return;
-                }
-
-                const tokens = searchData.toLowerCase().split(/\s+/);
-
-                const row_cnt = rows.map(row => {
-                    const productName = row["name"] ? row["name"].toLowerCase() : '';
-                    if (!productName) return { row, cnt: 0 };
-
-                    let cnt = 0;
-                    for (let token of tokens) {
-                        if (productName.includes(token)) {
-                            cnt += 1;
-                        }
-                    }
-                    return { row, cnt };
-                });
-
-                const sortedRows = row_cnt
-                    .filter(item => item.cnt > 0)
-                    .sort((a, b) => b.cnt - a.cnt);
-
-                if (sortedRows.length > 0) {
-                    console.log('Matched Rows in 2nd CSV:', sortedRows);
-                    resolve(sortedRows);
-                } else {
-                    console.warn('No matches found for:', searchData, 'from csv2');
-                    resolve([]);
-                }
-            }
-        });
-    });
-}
 function searchingCsv3(searchData) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -169,10 +118,9 @@ function searchingCsv3(searchData) {
 async function handleSearch(searchData) {
     try {
         const results1 = await searchingCsv(searchData);
-        const results2 = await searchingCsv2(searchData);
         const results3 = await searchingCsv3(searchData);
 
-        const combinedResults = [...results1, ...results2, ...results3];
+        const combinedResults = [...results1, ...results3];
 
         const sortedCombinedResults = combinedResults.sort((a, b) => b.cnt - a.cnt);
 

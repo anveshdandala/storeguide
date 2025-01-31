@@ -18,7 +18,6 @@ class Stack {
 }
 const stack =  new Stack();
 
-// //searching from amazon.csv file
 function searchingCsv(searchData) {
     return new Promise((resolve, reject) => {
         console.log('Searching for:', searchData, 'from csv');
@@ -29,13 +28,14 @@ function searchingCsv(searchData) {
             skipEmptyLines: true,
             error: function (error, file) {
                 console.error('Error processing the CSV:', error, file);
+                reject(error);
             },
             complete: function (results) {
-                // console.log('CSV data parsed:', results);
                 const rows = results.data;
 
                 if (!rows || rows.length === 0) {
                     console.warn('No data found in the CSV.');
+                    resolve([]);
                     return;
                 }
 
@@ -58,176 +58,205 @@ function searchingCsv(searchData) {
                     .filter(item => item.cnt > 0)
                     .sort((a, b) => b.cnt - a.cnt);
 
-                
                 if (sortedRows.length > 0) {
                     console.log('Matched Rows in 1st CSV:', sortedRows);
-
-                    sortedRows.forEach(item => stack.push(item.row)); 
+                    resolve(sortedRows);
                 } else {
                     console.warn('No matches found for:', searchData, 'from csv');
+                    resolve([]);
                 }
-                resolve();
             }
         });
     });
 }
-// //products.csv
-// function searchingCsv2(searchData){
-//     return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//     console.log("searching for",searchData,"in csv2");
-//     Papa.parse('products.csv',{
-//         download:true,
-//         header:true,
-//         complete:function(result) {
-//             const rows = result.data;
-//             // console.log('Parsed rows:', rows);
-//             const tokens = searchData.toLowerCase().split(/\s+/);
-
-//             if (!rows || rows.length === 0) {
-//                 console.warn('No data found in the CSV.');
-//                 return;
-//             }
-//             const row_cnt=rows.map(row=>{
-//                 const productName =  row['name'] ? row['name'].toLowerCase() : '';
-//                 if (!productName) return {row,cnt:0};
-//                 let cnt=0;
-//                 for (let token of tokens) {
-//                     if (productName.includes(token)) {
-//                         cnt += 1;
-//                     }
-//                 }
-//                 return {row,cnt};
-//             });
-            
-//             const sortedRows = row_cnt.filter(item => item.cnt > 0).sort((a, b) => b.cnt - a.cnt);
-//             if (sortedRows.length > 0) {
-//                 console.log('Matching rows sorted from csv2:', sortedRows);
-//                 sortedRows.forEach(item => stack.push(item.row));
-//             }
-//             else {
-//                 console.warn('No matches found for:', searchData);
-//             }
-//             resolve();
-
-//         },
-//         error: function(error,file){
-//             console.log('Error processing 2nd CSV:', error, file)
-//         }
-
-//     });
-//     },400);
-// });
-// }
-//dmart
-function searchingCsv3(searchData){
+function searchingCsv2(searchData) {
     return new Promise((resolve, reject) => {
-    setTimeout(() => {
-    console.log("searching for",searchData,"in csv3");
-    Papa.parse('DMart.csv',{
-        download:true,
-        header:true,
-        complete:function(result) {
-            const rows = result.data;
-            // console.log('Parsed rows:', rows);
-            const tokens = searchData.toLowerCase().split(/\s+/);
+        console.log("Searching for", searchData, "in csv2");
+        
+        Papa.parse('products.csv', {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            error: function (error, file) {
+                console.error('Error processing the CSV:', error, file);
+                reject(error);
+            },
+            complete: function (results) {
+                const rows = results.data;
 
-            if (!rows || rows.length === 0) {
-                console.warn('No data found in the CSV.');
-                return;
-            }
-            const row_cnt=rows.map(row=>{
-                const productName =  row['Name'] ? row['Name'].toLowerCase() : '';
-                if (!productName) return {row,cnt:0};
-                let cnt=0;
-                for (let token of tokens) {
-                    if (productName.includes(token)) {
-                        cnt += 1;
-                    }
+                if (!rows || rows.length === 0) {
+                    console.warn('No data found in the CSV.');
+                    resolve([]);
+                    return;
                 }
-                return {row,cnt};
-            });
-            
-            const sortedRows = row_cnt.filter(item => item.cnt > 0).sort((a, b) => b.cnt - a.cnt);
-            if (sortedRows.length > 0) {
-                console.log('Matching rows sorted from csv3:', sortedRows);
-                sortedRows.forEach(item => stack.push(item.row));
-            }
-            else {
-                console.warn('No matches found for:', searchData);
-            }
-            resolve();
 
-        },
-        error: function(error,file){
-            console.log('Error processing 3rd CSV:', error, file)
-        }
+                const tokens = searchData.toLowerCase().split(/\s+/);
 
+                const row_cnt = rows.map(row => {
+                    const productName = row["name"] ? row["name"].toLowerCase() : '';
+                    if (!productName) return { row, cnt: 0 };
+
+                    let cnt = 0;
+                    for (let token of tokens) {
+                        if (productName.includes(token)) {
+                            cnt += 1;
+                        }
+                    }
+                    return { row, cnt };
+                });
+
+                const sortedRows = row_cnt
+                    .filter(item => item.cnt > 0)
+                    .sort((a, b) => b.cnt - a.cnt);
+
+                if (sortedRows.length > 0) {
+                    console.log('Matched Rows in 2nd CSV:', sortedRows);
+                    resolve(sortedRows);
+                } else {
+                    console.warn('No matches found for:', searchData, 'from csv2');
+                    resolve([]);
+                }
+            }
+        });
     });
-    },600);
-});
 }
+function searchingCsv3(searchData) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log("searching for", searchData, "in csv3");
+            Papa.parse('DMart.csv', {
+                download: true,
+                header: true,
+                complete: function (result) {
+                    const rows = result.data;
+                    const tokens = searchData.toLowerCase().split(/\s+/);
 
-async function handleSearch() {
+                    if (!rows || rows.length === 0) {
+                        console.warn('No data found in the CSV.');
+                        resolve([]);
+                        return;
+                    }
 
-    const searchData = document.getElementById('text-area').value.trim().toLowerCase();    
-    if (!searchData) {
-        console.warn('Please enter a valid search term.');
-        return;
-    }
-    stack.data=[];
+                    const row_cnt = rows.map(row => {
+                        const productName = row['Name'] ? row['Name'].toLowerCase() : '';
+                        if (!productName) return { row, cnt: 0 };
+                        let cnt = 0;
+                        for (let token of tokens) {
+                            if (productName.includes(token)) {
+                                cnt += 1;
+                            }
+                        }
+                        return { row, cnt };
+                    });
+
+                    const sortedRows = row_cnt.filter(item => item.cnt > 0).sort((a, b) => b.cnt - a.cnt);
+                    if (sortedRows.length > 0) {
+                        console.log('Matching rows sorted from csv3:', sortedRows);
+                        resolve(sortedRows);
+                    } else {
+                        console.warn('No matches found for:', searchData);
+                        resolve([]);
+                    }
+                },
+                error: function (error, file) {
+                    console.log('Error processing 3rd CSV:', error, file);
+                    reject(error);
+                }
+            });
+        }, 600);
+    });
+}
+async function handleSearch(searchData) {
     try {
-        await Promise.all([searchingCsv(searchData),searchingCsv3(searchData)]);
-        if(stack.isEmpty()){
-            console.log('no match found in either of em');
-        }
-        else{
-            console.log('final avilable products are',stack.printStack()); 
-            displayResults(stack.printStack());
-            console.log(typeof(stack.printStack()));
-        }
+        const results1 = await searchingCsv(searchData);
+        const results2 = await searchingCsv2(searchData);
+        const results3 = await searchingCsv3(searchData);
+
+        const combinedResults = [...results1, ...results2, ...results3];
+
+        const sortedCombinedResults = combinedResults.sort((a, b) => b.cnt - a.cnt);
+
+        console.log('Combined and Sorted Results:', sortedCombinedResults);
+
+        return sortedCombinedResults;
     } catch (error) {
-        console.error('Error during search:', error);
+        console.error('Error during search and combine:', error);
+        return [];
     }
-    
 }
 (() => {
-    document.getElementById('search').addEventListener('click', handleSearch);
-    document.getElementById('text-area').addEventListener('keypress', function(event){
-        if(event.key==='Enter'){
-            handleSearch();
+    const searchButton = document.getElementById('search');
+    const searchInput = document.getElementById('text-area');
+    overlayToggle();
+    searchButton.addEventListener('click', () => {
+        const searchData = searchInput.value.trim().toLowerCase();
+        overlayToggle();
+        if (!searchData) {
+            console.warn('Please enter a valid search term.');
+            return;
         }
-
+        console.log('Searching for:', searchData);
+        handleSearch(searchData).then(displayResults);
     });
 
+    searchInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            overlayToggle();
+            const searchData = searchInput.value.trim().toLowerCase();
+            if (!searchData) {
+                console.warn('Please enter a valid search term.');
+                return;
+            }
+            console.log('Searching for:', searchData);
+            handleSearch(searchData).then(displayResults);
+        }
+    });
 })();
 
 //dynamic display of search results
 function displayResults(products) {
-    const productsGrid = document.getElementById('products-grid');
-    productsGrid.innerHTML = ''; // Clear previous results
-
     products.slice(0, 50).forEach(product => {
+        const data = product.row || product;
+
         const card = document.createElement('div');
         card.className = 'product-card';
-
+    
         card.innerHTML = `
-                    <img src="${product.imageURLs || product.img_link || 'img/placeholder.png'}" 
-                        alt="${product.name || 'Product'}">
-                    <h3>${(product.name || product.Name || product.product_name ||'Unnamed Product').slice(0, 20)}...</h3>  <!-- Show only first 20 characters -->
-                    <p>${(product.p_description || product.about_product || product.Description || 'No description available.')
-                        .slice(0, 100)}...</p>  <!-- Truncate description to 100 characters -->
-                    <p><strong>Price:</strong> $${product.price || product.Price || 'N/A'}</p>
-                    <button onclick="addToList('${product.product_id || product.ID || product.p_id || ''}')">Add to List</button>
-                `;
-
-        productsGrid.appendChild(card);
+            <img src="${data.imageURLs || data.img_link || '/img/placeholder.png'}" 
+                alt="${data.Name || data.name || 'Product'}">
+                
+            <p><strong>Brand:</strong> ${data.Brand || 'N/A'}</p>
+            <p><strong>Category:</strong> ${data.Category || data.SubCategory || 'N/A'}</p>
+            <p><strong>Quantity:</strong> ${data.Quantity || 'N/A'}</p>
+    
+            <p>${(data.p_description || data.Description || data.about_product || 'No description available.').slice(0, 100)}...</p>
+    
+            <p><strong>Price:</strong> $${data.Price || data.price || 'N/A'}</p>
+            <p><strong>Discounted Price:</strong> $${data.DiscountedPrice || 'N/A'}</p>
+            <p><strong>Breadcrumbs:</strong> ${data.BreadCrumbs || 'N/A'}</p>
+    
+            <button onclick="addToList('${data.p_id || data.product_id || data.ID || ''}')">Add to List</button>
+        `;
+    
+        document.getElementById('products-grid').appendChild(card);
     });
+    
 }
+    
+const overlay = document.getElementById("results");
+()=>{
+    overlay.style.display = "none";
+}
+function overlayToggle(){
+    const overlay = document.getElementById("overlay");
+    if (overlay) {
+        overlay.style.display = overlay.style.display === "block" ? "none" : "block";
+    }
+};
+
 
 function addToList(productId) {
     console.log(`Product with ID ${productId} added to the list.`);
-    // Implement your "add to list" functionality here
 }
 
 //adds

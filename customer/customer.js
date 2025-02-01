@@ -1,4 +1,4 @@
-
+//hjfj
 class Stack {
     constructor() {
         this.data = [];

@@ -1,23 +1,3 @@
-//hjfj
-class Stack {
-    constructor() {
-        this.data = [];
-    }
-
-    push(item) {
-        this.data.push(item);
-    }
-
-    printStack() {
-        return this.data.flat(); // Flatten the stack to get all matched products in one array
-    }
-
-    isEmpty() {
-        return this.data.length === 0;
-    }
-}
-const stack =  new Stack();
-
 function searchingCsv(searchData) {
     return new Promise((resolve, reject) => {
         console.log('Searching for:', searchData, 'from csv');
@@ -63,6 +43,57 @@ function searchingCsv(searchData) {
                     resolve(sortedRows);
                 } else {
                     console.warn('No matches found for:', searchData, 'from csv');
+                    resolve([]);
+                }
+            }
+        });
+    });
+}
+function searchingCsv2(searchData) {
+    return new Promise((resolve, reject) => {
+        console.log("Searching for", searchData, "in csv2");
+        
+        Papa.parse('products.csv', {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            error: function (error, file) {
+                console.error('Error processing the CSV:', error, file);
+                reject(error);
+            },
+            complete: function (results) {
+                const rows = results.data;
+
+                if (!rows || rows.length === 0) {
+                    console.warn('No data found in the CSV.');
+                    resolve([]);
+                    return;
+                }
+
+                const tokens = searchData.toLowerCase().split(/\s+/);
+
+                const row_cnt = rows.map(row => {
+                    const productName = row["name"] ? row["name"].toLowerCase() : '';
+                    if (!productName) return { row, cnt: 0 };
+
+                    let cnt = 0;
+                    for (let token of tokens) {
+                        if (productName.includes(token)) {
+                            cnt += 1;
+                        }
+                    }
+                    return { row, cnt };
+                });
+
+                const sortedRows = row_cnt
+                    .filter(item => item.cnt > 0)
+                    .sort((a, b) => b.cnt - a.cnt);
+
+                if (sortedRows.length > 0) {
+                    console.log('Matched Rows in 2nd CSV:', sortedRows);
+                    resolve(sortedRows);
+                } else {
+                    console.warn('No matches found for:', searchData, 'from csv2');
                     resolve([]);
                 }
             }
@@ -118,9 +149,10 @@ function searchingCsv3(searchData) {
 async function handleSearch(searchData) {
     try {
         const results1 = await searchingCsv(searchData);
+        const results2 = await searchingCsv2(searchData);
         const results3 = await searchingCsv3(searchData);
 
-        const combinedResults = [...results1, ...results3];
+        const combinedResults = [...results1, ...results2, ...results3];
 
         const sortedCombinedResults = combinedResults.sort((a, b) => b.cnt - a.cnt);
 
@@ -132,35 +164,6 @@ async function handleSearch(searchData) {
         return [];
     }
 }
-(() => {
-    const searchButton = document.getElementById('search');
-    const searchInput = document.getElementById('text-area');
-    overlayToggle();
-    searchButton.addEventListener('click', () => {
-        const searchData = searchInput.value.trim().toLowerCase();
-        overlayToggle();
-        if (!searchData) {
-            console.warn('Please enter a valid search term.');
-            return;
-        }
-        console.log('Searching for:', searchData);
-        handleSearch(searchData).then(displayResults);
-    });
-
-    searchInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            overlayToggle();
-            const searchData = searchInput.value.trim().toLowerCase();
-            if (!searchData) {
-                console.warn('Please enter a valid search term.');
-                return;
-            }
-            console.log('Searching for:', searchData);
-            handleSearch(searchData).then(displayResults);
-        }
-    });
-})();
-
 //dynamic display of search results
 function displayResults(products) {
     products.slice(0, 50).forEach(product => {
@@ -190,18 +193,59 @@ function displayResults(products) {
     });
     
 }
-    
-const overlay = document.getElementById("results");
-()=>{
-    overlay.style.display = "none";
-}
-function overlayToggle(){
-    const overlay = document.getElementById("overlay");
-    if (overlay) {
-        overlay.style.display = overlay.style.display === "block" ? "none" : "block";
-    }
-};
+let search_count = 0;
+(() => {
+    const searchButton = document.getElementById('search');
+    const searchInput = document.getElementById('text-area');
+    off();
+    const toggleOverlay = () => {
+        if (search_count % 2 === 0) {
+            console.log('Search count after on:', search_count);
+            on();
+        } else {
+            console.log('Search count after off:', search_count);
+            off();
+        }
+    };
 
+    searchButton.addEventListener('click', () => {
+        search_count++;
+        const searchData = searchInput.value.trim().toLowerCase();
+        if (!searchData) {
+            console.warn('Please enter a valid search term.');
+            return;
+        }
+        console.log('Searching for:', searchData);
+        handleSearch(searchData).then(displayResults);
+        toggleOverlay();
+    });
+
+    searchInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            search_count++;
+            const searchData = searchInput.value.trim().toLowerCase();
+            if (!searchData) {
+                console.warn('Please enter a valid search term.');
+                return;
+            }
+            console.log('Searching for:', searchData);
+            handleSearch(searchData).then(displayResults);
+            toggleOverlay();
+        }
+    });
+})();
+function on() {
+    document.getElementById("results").style.display = "block";
+    document.getElementById("search-button").setAttribute("href", "#results");
+    document.getElementById("search-button").setAttribute("src", "/img/close.svg");
+}
+function off() {
+    document.getElementById("results").style.display = "none";
+    document.getElementById("search-button").setAttribute("src", "/img/search.svg");
+
+}
+
+// Removed duplicate on and off functions
 
 function addToList(productId) {
     console.log(`Product with ID ${productId} added to the list.`);
@@ -209,11 +253,11 @@ function addToList(productId) {
 
 //adds
 let adds ={
-    add1: "img/add1.png",
-    add2: "img/add2.png",
-    add3: "img/add3.png",
-    add4: "img/add4.png",
-    add5: "img/add5.png", 
+    add1: "/img/add1.png",
+    add2: "/img/add2.png",
+    add3: "/img/add3.png",
+    add4: "/img/add4.png",
+    add5: "/img/add5.png", 
 };
 let addArray=[adds.add1, adds.add2, adds.add3, adds.add4, adds.add5];
 
@@ -255,19 +299,3 @@ function step(timestamp) {
 }
 
 // 2000 x 1200 Pixels
-let result_count = 0; 
-document.getElementById('search').addEventListener('click', () => {
-    result_count+=result_count;
-    if (result_count%2===0) {
-        on();
-    } else {
-        off();
-    }
-});
-
-function on() {
-    document.getElementById("results").style.display = "block";
-}
-function off() {
-    document.getElementById("results").style.display = "none";
-}

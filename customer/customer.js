@@ -236,12 +236,11 @@ let search_count = 0;
 })();
 function on() {
     document.getElementById("results").style.display = "block";
-    document.getElementById("search-button").setAttribute("href", "#results");
-    document.getElementById("search-button").setAttribute("src", "/img/close.svg");
+    document.getElementById("search-button").setAttribute("src", "img/close.svg");
 }
 function off() {
     document.getElementById("results").style.display = "none";
-    document.getElementById("search-button").setAttribute("src", "/img/search.svg");
+    document.getElementById("search-button").setAttribute("src", "img/search.svg");
 
 }
 

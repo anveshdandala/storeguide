@@ -252,11 +252,11 @@ function addToList(productId) {
 
 //adds
 let adds ={
-    add1: "/img/add1.png",
-    add2: "/img/add2.png",
-    add3: "/img/add3.png",
-    add4: "/img/add4.png",
-    add5: "/img/add5.png", 
+    add1: "img/add1.png",
+    add2: "img/add2.png",
+    add3: "img/add3.png",
+    add4: "img/add4.png",
+    add5: "img/add5.png", 
 };
 let addArray=[adds.add1, adds.add2, adds.add3, adds.add4, adds.add5];
 
